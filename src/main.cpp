@@ -3,7 +3,7 @@
 #include <SDL_mixer.h>
 
 #include "engine.h"
-#include "level.h"
+#include "menu.h"
 
 int main(int argc, char* argv[]){
 
@@ -11,7 +11,8 @@ int main(int argc, char* argv[]){
     if(!game.init()){
         return 1;
     }
-    Level* test = new Level();
+    Menu* test = new Menu();
+
     game.setState(test);
     while(game.isRunning()){
         game.handleEvents();

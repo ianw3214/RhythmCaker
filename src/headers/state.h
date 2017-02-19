@@ -18,7 +18,7 @@ public:
 
     bool shouldQuit();
     State* getNextState();
-private:
+protected:
     State * nextState;
     bool quit;
 };
