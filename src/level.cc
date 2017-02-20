@@ -147,6 +147,7 @@ void Level::render(SDL_Surface* display){
         sprites.at(i)->render(display, {});
     }
     renderCakes(display);
+    renderScore(display);
 }
 
 void Level::mainPress(){
@@ -279,4 +280,64 @@ void Level::goToScore(){
     Score* scene = new Score(score);
     nextState = scene;
     quit = true;
+}
+
+void Level::renderScore(SDL_Surface* display){
+    // display the score in number form
+    std::string scoreString = std::to_string(score);
+    for(int i = 0; i < scoreString.size(); i++){
+        int key = scoreString[i] - '0';
+        switch(key){
+            case 0:{
+                Sprite * temp = new Sprite("../art/0.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+            case 1:{
+                Sprite * temp = new Sprite("../art/1.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+            case 2:{
+                Sprite * temp = new Sprite("../art/2.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+            case 3:{
+                Sprite * temp = new Sprite("../art/3.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+            case 4:{
+                Sprite * temp = new Sprite("../art/4.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+            case 5:{
+                Sprite * temp = new Sprite("../art/5.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+            case 6:{
+                Sprite * temp = new Sprite("../art/6.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+            case 7:{
+                Sprite * temp = new Sprite("../art/7.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+            case 8:{
+                Sprite * temp = new Sprite("../art/8.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+            case 9:{
+                Sprite * temp = new Sprite("../art/9.png");
+                temp->setPos(100 + i * 64, 200);
+                temp->render(display, {});
+            } break;
+        }
+    }
 }

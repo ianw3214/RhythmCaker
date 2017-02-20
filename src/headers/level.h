@@ -61,6 +61,7 @@ private:
     Uint32 preStartTick;
 
     void mainPress();
+    void renderScore(SDL_Surface*);
     void loadBeatMap();
     void loadCakes();
     void eatCake();
