@@ -8,6 +8,7 @@
 #include "animatedSprite.h"
 #include "state.h"
 #include "level.h"
+#include "tutorial.h"
 
 struct menuItem{
     int index;

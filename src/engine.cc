@@ -1,5 +1,6 @@
 #include "engine.h"
 
+#include <string>
 #include <iostream>
 
 Engine::Engine(){
@@ -31,6 +32,10 @@ bool Engine::init(){
             return false;
         }
     }
+    // set a window icon
+    std::string iconPath = "art/icon.png";
+    SDL_Surface* icon = IMG_Load(iconPath.c_str());
+    SDL_SetWindowIcon(gWindow, icon);
     // initialzie delta time calculating variables
     currentTime = SDL_GetTicks();
     lastTime = currentTime;

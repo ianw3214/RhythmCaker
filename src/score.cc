@@ -15,7 +15,7 @@ Score::Score(int finalScore){
     crotchet = static_cast<float>(60)/static_cast<float>(bpm);
     beat = 0;
     // start the music
-    std::string musicPath = "../music/track002.wav";
+    std::string musicPath = "music/track002.wav";
     audio = Mix_LoadWAV(musicPath.c_str());
     Mix_PlayChannel(2, audio, -1);
     startTick = SDL_GetTicks();
@@ -62,52 +62,52 @@ void Score::displayScore(){
         int key = scoreString[i] - '0';
         switch(key){
             case 0:{
-                Sprite * temp = new Sprite("../art/0.png");
+                Sprite * temp = new Sprite("art/0.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;
             case 1:{
-                Sprite * temp = new Sprite("../art/1.png");
+                Sprite * temp = new Sprite("art/1.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;
             case 2:{
-                Sprite * temp = new Sprite("../art/2.png");
+                Sprite * temp = new Sprite("art/2.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;
             case 3:{
-                Sprite * temp = new Sprite("../art/3.png");
+                Sprite * temp = new Sprite("art/3.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;
             case 4:{
-                Sprite * temp = new Sprite("../art/4.png");
+                Sprite * temp = new Sprite("art/4.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;
             case 5:{
-                Sprite * temp = new Sprite("../art/5.png");
+                Sprite * temp = new Sprite("art/5.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;
             case 6:{
-                Sprite * temp = new Sprite("../art/6.png");
+                Sprite * temp = new Sprite("art/6.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;
             case 7:{
-                Sprite * temp = new Sprite("../art/7.png");
+                Sprite * temp = new Sprite("art/7.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;
             case 8:{
-                Sprite * temp = new Sprite("../art/8.png");
+                Sprite * temp = new Sprite("art/8.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;
             case 9:{
-                Sprite * temp = new Sprite("../art/9.png");
+                Sprite * temp = new Sprite("art/9.png");
                 temp->setPos(500 + i * 64, 200);
                 scoreVector.push_back(temp);
             } break;

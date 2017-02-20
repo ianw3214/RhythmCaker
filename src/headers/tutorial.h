@@ -12,11 +12,12 @@
 #include "background.h"
 #include "text.h"
 #include "score.h"
+#include "tempState.h"
 
-class Level : public State {
+class Tutorial : public State {
 
 public:
-    Level();
+    Tutorial();
 
     void init();
     void exit();
@@ -25,7 +26,7 @@ public:
     void update(float);
     void render(SDL_Surface*);
 private:
-    AudioLoader* music;
+    Mix_Chunk * audio;
 
     int bpm;
     float crotchet;
@@ -49,22 +50,11 @@ private:
     Sprite* cake2;
     Sprite* cake3;
 
-    int score, overCounter;
-    float nextStateTime;
-    bool gameOver;
-
-    // variables to handle ticking before game starts
-    bool started;
-    int preBeat;
-    Uint32 preStartTick;
-
     void mainPress();
-    void renderScore(SDL_Surface*);
     void loadBeatMap();
     void loadCakes();
     void eatCake();
     void renderCakes(SDL_Surface*);
     void start();
-    void playTick();
-    void goToScore();
+    void loadTypeMap();
 };

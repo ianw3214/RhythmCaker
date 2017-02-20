@@ -5,7 +5,7 @@
 #include <cmath>
 
 Level::Level(){
-    music = new AudioLoader("../music/track001.wav");
+    music = new AudioLoader("music/track001.wav");
 }
 
 void Level::init() {
@@ -18,13 +18,11 @@ void Level::init() {
     bear->setPos(800, 90);
     sprites.push_back(bear);
     // set the cake textures
-    cake1 = new Sprite("../art/cake001.png");
-    cake2 = new Sprite("../art/cake002.png");
-    cake3 = new Sprite("../art/cake003.png");
-    text_GOOD = new Sprite("../art/good.png");
+    cake1 = new Sprite("art/cake001.png");
+    cake2 = new Sprite("art/cake002.png");
+    cake3 = new Sprite("art/cake003.png");
     // set the beat map and beat data
     typeMap = {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 2, 1, 1};
-    typeMap = {0, 0};
     loadCakes();
     loadBeatMap();
     beatMapIndex = 0;
@@ -161,25 +159,25 @@ void Level::mainPress(){
         int difference = difference1 > difference2 ? difference2 : difference1;
         std::cout << difference << std::endl;
         // add a text corresponding to how well the player did
-        if(difference >= 70){
-            Text * text = new Text("../art/fail.png", 300);
+        if(difference >= 90){
+            Text * text = new Text("art/fail.png", 300);
             text->setPos(100, 500);
             sprites.push_back(text);
         }else if(difference >20){
             score += 100;
-            Text * text = new Text("../art/good.png", 400);
+            Text * text = new Text("art/good.png", 400);
             text->setPos(100, 500);
             sprites.push_back(text);
         }else{
             score += 500;
-            Text * text = new Text("../art/delicious.png", 400);
+            Text * text = new Text("art/delicious.png", 400);
             text->setPos(100, 500);
             sprites.push_back(text);
         }
     }
     bear->eat();
     // play a beat
-	Mix_Chunk *tempWave = Mix_LoadWAV("../music/beat.wav");
+	Mix_Chunk *tempWave = Mix_LoadWAV("music/beat.wav");
 	// check to see if the music successfully loaded
 	if (tempWave == nullptr) {
 		std::cout << "Music was not able to be played, Error: " << Mix_GetError() << std::endl;
@@ -264,7 +262,7 @@ void Level::start(){
 
 void Level::playTick(){
     // play a tick
-	Mix_Chunk *tempWave = Mix_LoadWAV("../music/tick.wav");
+	Mix_Chunk *tempWave = Mix_LoadWAV("music/tick.wav");
 	// check to see if the music successfully loaded
 	if (tempWave == nullptr) {
 		std::cout << "Music was not able to be played, Error: " << Mix_GetError() << std::endl;
@@ -289,52 +287,52 @@ void Level::renderScore(SDL_Surface* display){
         int key = scoreString[i] - '0';
         switch(key){
             case 0:{
-                Sprite * temp = new Sprite("../art/0.png");
+                Sprite * temp = new Sprite("art/0.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;
             case 1:{
-                Sprite * temp = new Sprite("../art/1.png");
+                Sprite * temp = new Sprite("art/1.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;
             case 2:{
-                Sprite * temp = new Sprite("../art/2.png");
+                Sprite * temp = new Sprite("art/2.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;
             case 3:{
-                Sprite * temp = new Sprite("../art/3.png");
+                Sprite * temp = new Sprite("art/3.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;
             case 4:{
-                Sprite * temp = new Sprite("../art/4.png");
+                Sprite * temp = new Sprite("art/4.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;
             case 5:{
-                Sprite * temp = new Sprite("../art/5.png");
+                Sprite * temp = new Sprite("art/5.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;
             case 6:{
-                Sprite * temp = new Sprite("../art/6.png");
+                Sprite * temp = new Sprite("art/6.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;
             case 7:{
-                Sprite * temp = new Sprite("../art/7.png");
+                Sprite * temp = new Sprite("art/7.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;
             case 8:{
-                Sprite * temp = new Sprite("../art/8.png");
+                Sprite * temp = new Sprite("art/8.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;
             case 9:{
-                Sprite * temp = new Sprite("../art/9.png");
+                Sprite * temp = new Sprite("art/9.png");
                 temp->setPos(100 + i * 64, 200);
                 temp->render(display, {});
             } break;

@@ -3,7 +3,7 @@
 #include <iostream>
 #include <vector>
 
-Bear::Bear() : AnimatedSprite("../art/bear_sheet.png", 256, 128, 4, false) {
+Bear::Bear() : AnimatedSprite("art/bear_sheet.png", 256, 128, 4, false) {
     std::vector<int> animData = {1, 4};
     setAnimationData(animData);
 }

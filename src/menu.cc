@@ -4,27 +4,27 @@
 
 Menu::Menu(){
     // play item
-    Sprite * play = new Sprite("../art/play.png");
+    Sprite * play = new Sprite("art/play.png");
     play->setPos(700, 350);
     menuItem * item1 = new menuItem({0, nullptr, nullptr, play});
     selected = item1;
     // tutorial item
-    Sprite * tutorial = new Sprite("../art/tutorial.png");
+    Sprite * tutorial = new Sprite("art/tutorial.png");
     tutorial->setPos(700, 450);
     menuItem * item2 = new menuItem({1, item1, nullptr, tutorial});
     item1->next = item2;
     // quit item
-    Sprite * quit = new Sprite("../art/quit.png");
+    Sprite * quit = new Sprite("art/quit.png");
     quit->setPos(700, 550);
     menuItem * item3 = new menuItem({2, item2, nullptr, quit});
     item2->next = item3;
     // selector icon
-    selector = new Sprite("../art/icon.png");
+    selector = new Sprite("art/icon.png");
     updateSelector();
     // background sprite
     background = new Background();
     // title sprite
-    title = new Sprite("../art/title.png");
+    title = new Sprite("art/title.png");
     title->setPos(0, 20);
 
     // music variables
@@ -32,7 +32,7 @@ Menu::Menu(){
     crotchet = static_cast<float>(60)/static_cast<float>(bpm);
     beat = 0;
     // start the music
-    std::string musicPath = "../music/track002.wav";
+    std::string musicPath = "music/track002.wav";
     audio = Mix_LoadWAV(musicPath.c_str());
     Mix_PlayChannel(2, audio, -1);
     startTick = SDL_GetTicks();
@@ -111,7 +111,9 @@ void Menu::select(){
     }
     // tutorial level
     if(key == 1){
-        std::cout << "TUTORIAL" << std::endl;
+        Tutorial * temp = new Tutorial();
+        nextState  = temp;
+        quit = true;
     }
     // quit game
     if(key == 2){
@@ -120,7 +122,7 @@ void Menu::select(){
 
     }
     // play a transition sound
-    Mix_Chunk *tempWave = Mix_LoadWAV("../music/select.wav");
+    Mix_Chunk *tempWave = Mix_LoadWAV("music/select.wav");
     // check to see if the music successfully loaded
     if (tempWave == nullptr) {
         std::cout << "Music was not able to be played, Error: " << Mix_GetError() << std::endl;
@@ -134,7 +136,7 @@ void Menu::select(){
 
 void Menu::playBlip(){
     // play a blip
-	Mix_Chunk *tempWave = Mix_LoadWAV("../music/blip.wav");
+	Mix_Chunk *tempWave = Mix_LoadWAV("music/blip.wav");
 	// check to see if the music successfully loaded
 	if (tempWave == nullptr) {
 		std::cout << "Music was not able to be played, Error: " << Mix_GetError() << std::endl;
