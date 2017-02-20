@@ -4,33 +4,27 @@
 #include <SDL_image.h>
 #include <SDL_mixer.h>
 
+#include <vector>
+
 #include "sprite.h"
 #include "animatedSprite.h"
 #include "state.h"
-#include "level.h"
+#include "menu.h"
 
-struct menuItem{
-    int index;
-    menuItem * previous;
-    menuItem * next;
-    Sprite* sprite;
-};
-
-class Menu : public State{
+class Score : public State{
 
 public:
-    Menu();
+    Score(int);
     void exit();
 
     void handleEvents(SDL_Event);
     void update(float);
     void render(SDL_Surface*);
 private:
-    int menuLength;
-    menuItem * selected;
-    Sprite * selector;
+    int score;
+    std::vector<Sprite*> scoreVector;
+
     Background * background;
-    Sprite * title;
 
     int bpm;
     float crotchet;
@@ -40,7 +34,5 @@ private:
 
     Mix_Chunk * audio;
 
-    void updateSelector();
-    void select();
-    void playBlip();
+    void displayScore();
 };

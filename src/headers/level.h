@@ -11,6 +11,7 @@
 #include "bear.h"
 #include "background.h"
 #include "text.h"
+#include "score.h"
 
 class Level : public State {
 
@@ -50,9 +51,21 @@ private:
 
     Sprite* text_GOOD;
 
+    int score, overCounter;
+    float nextStateTime;
+    bool gameOver;
+
+    // variables to handle ticking before game starts
+    bool started;
+    int preBeat;
+    Uint32 preStartTick;
+
     void mainPress();
     void loadBeatMap();
     void loadCakes();
     void eatCake();
     void renderCakes(SDL_Surface*);
+    void start();
+    void playTick();
+    void goToScore();
 };

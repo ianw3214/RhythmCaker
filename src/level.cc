@@ -24,15 +24,22 @@ void Level::init() {
     text_GOOD = new Sprite("../art/good.png");
     // set the beat map and beat data
     typeMap = {0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 1, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 2, 2, 2, 2, 2, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 2, 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2, 2, 1, 1};
+    typeMap = {0, 0};
     loadCakes();
     loadBeatMap();
     beatMapIndex = 0;
     nextBeat = beatMap.at(beatMapIndex);
     lastBeat = nextBeat;
     beat = 0;
-    // start the music and timer
-    music->start();
-    startTick = SDL_GetTicks();
+    // variables to handle ticking before game starts
+    preBeat = 0;
+    started = false;
+    preStartTick = SDL_GetTicks();
+    // set initial variables
+    gameOver = false;
+    overCounter = 0;
+    nextStateTime = 0.0f;
+    score = 0;
 }
 
 void Level::exit(){
@@ -41,7 +48,7 @@ void Level::exit(){
 
 void Level::handleEvents(SDL_Event event){
     if(event.type == SDL_KEYDOWN){
-        if(event.key.keysym.sym == SDLK_a){
+        if(event.key.keysym.sym == SDLK_a || event.key.keysym.sym == SDLK_SPACE){
             if(!press1){
                 mainPress();
                 press1 = true;
@@ -49,33 +56,78 @@ void Level::handleEvents(SDL_Event event){
         }
     }
     if(event.type == SDL_KEYUP){
-        if(event.key.keysym.sym == SDLK_a){
+        if(event.key.keysym.sym == SDLK_a || event.key.keysym.sym == SDLK_SPACE){
             press1 = false;
         }
     }
 }
 
 void Level::update(float delta){
-    currentTick = static_cast<float>(SDL_GetTicks() - startTick)/1000.0;
-    // update the current beat if necessary
-    if((nextBeat-1)*crotchet < currentTick){
-        beatMapIndex++;
-        lastBeat = nextBeat;
-        // go to the next beat if there are any left
-        if(beatMapIndex < beatMap.size()){
-            nextBeat = beatMap.at(beatMapIndex);
+    if(started){
+        currentTick = static_cast<float>(SDL_GetTicks() - startTick)/1000.0;
+        // update the current beat if necessary
+        if((nextBeat-1)*crotchet < currentTick  && !gameOver){
+            beatMapIndex++;
+            lastBeat = nextBeat;
+            // go to the next beat if there are any left
+            if(beatMapIndex < beatMap.size()){
+                nextBeat = beatMap.at(beatMapIndex);
+            }else{
+                if(overCounter < 2){
+                    overCounter++;
+                }else{
+                    // game is over when no more beatmap
+                    gameOver = true;
+                }
+            }
+            // eat a cake when the next beat is reached
+            eatCake();
         }
-        // eat a cake when the next beat is reached
-        eatCake();
-    }
-    // keep track of the current beat in the song
-    if(beat*crotchet < currentTick){
-        background->changeDirection();
-        // update the bear sprite if tile is right
-        if(beat % 2 == 0){
-            bear->readyEat();
+        if(gameOver){
+            nextStateTime += delta;
+            if(nextStateTime > 3){
+                // go to game over screen
+                goToScore();
+            }
         }
-        beat++;
+        // keep track of the current beat in the song
+        if(beat*crotchet < currentTick){
+            background->changeDirection();
+            // update the bear sprite if tile is right
+            if(beat % 2 == 0){
+                bear->readyEat();
+            }
+            beat++;
+        }
+    }else{
+        // the game is still in prebeat
+        currentTick = static_cast<float>(SDL_GetTicks() - preStartTick)/1000.0;
+        // keep track of the current beat in the song
+        if(preBeat * crotchet < currentTick){
+            background->changeDirection();
+            // update the bear sprite if tile is right
+            preBeat++;
+
+            if(preBeat == 5){
+                playTick();
+                std::cout << "5" << std::endl;
+            }
+            if(preBeat == 6){
+                playTick();
+                std::cout << "6" << std::endl;
+            }
+            if(preBeat == 7){
+                playTick();
+                std::cout << "7" << std::endl;
+            }
+            if(preBeat == 8){
+                playTick();
+                std::cout << "8" << std::endl;
+            }
+            if(preBeat >= 9){
+                start();
+            }
+        }
     }
     // update each sprite
     for(int i = 0; i < sprites.size(); i++){
@@ -98,29 +150,33 @@ void Level::render(SDL_Surface* display){
 }
 
 void Level::mainPress(){
-    // calculate the time at which the press occured
-    int cTick = static_cast<int>(SDL_GetTicks() - startTick);
-    int offset = 500;
-    // calculate the difference between press and next beat
-    int difference2 = std::abs(nextBeat * crotchet * 1000 - offset - cTick);
-    int difference1 = std::abs(lastBeat * crotchet * 1000 - offset - cTick);
-    int difference = difference1 > difference2 ? difference2 : difference1;
-    std::cout << difference << std::endl;
-    bear->eat();
-    // add a text corresponding to how well the player did
-    if(difference >= 70){
-        Text * text = new Text("../art/fail.png", 300);
-        text->setPos(100, 500);
-        sprites.push_back(text);
-    }else if(difference >20){
-        Text * text = new Text("../art/good.png", 400);
-        text->setPos(100, 500);
-        sprites.push_back(text);
-    }else{
-        Text * text = new Text("../art/delicious.png", 400);
-        text->setPos(100, 500);
-        sprites.push_back(text);
+    if(started && !gameOver){
+        // calculate the time at which the press occured
+        int cTick = static_cast<int>(SDL_GetTicks() - startTick);
+        int offset = 500;
+        // calculate the difference between press and next beat
+        int difference2 = std::abs(nextBeat * crotchet * 1000 - offset - cTick);
+        int difference1 = std::abs(lastBeat * crotchet * 1000 - offset - cTick);
+        int difference = difference1 > difference2 ? difference2 : difference1;
+        std::cout << difference << std::endl;
+        // add a text corresponding to how well the player did
+        if(difference >= 70){
+            Text * text = new Text("../art/fail.png", 300);
+            text->setPos(100, 500);
+            sprites.push_back(text);
+        }else if(difference >20){
+            score += 100;
+            Text * text = new Text("../art/good.png", 400);
+            text->setPos(100, 500);
+            sprites.push_back(text);
+        }else{
+            score += 500;
+            Text * text = new Text("../art/delicious.png", 400);
+            text->setPos(100, 500);
+            sprites.push_back(text);
+        }
     }
+    bear->eat();
     // play a beat
 	Mix_Chunk *tempWave = Mix_LoadWAV("../music/beat.wav");
 	// check to see if the music successfully loaded
@@ -195,4 +251,32 @@ void Level::renderCakes(SDL_Surface* display){
             cake1->render(display, {});
         }
     }
+}
+
+// start the game
+void Level::start(){
+    started = true;
+    // start the music and timer
+    music->start();
+    startTick = SDL_GetTicks();
+}
+
+void Level::playTick(){
+    // play a tick
+	Mix_Chunk *tempWave = Mix_LoadWAV("../music/tick.wav");
+	// check to see if the music successfully loaded
+	if (tempWave == nullptr) {
+		std::cout << "Music was not able to be played, Error: " << Mix_GetError() << std::endl;
+		return;
+	}
+	if (Mix_PlayChannel(2, tempWave, 0) == -1) {
+		std::cout << "Music was not able to be played, Error: " << Mix_GetError() << std::endl;
+	}
+}
+
+void Level::goToScore(){
+    // go to the score screen
+    Score* scene = new Score(score);
+    nextState = scene;
+    quit = true;
 }

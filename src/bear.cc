@@ -1,5 +1,6 @@
 #include "bear.h"
 
+#include <iostream>
 #include <vector>
 
 Bear::Bear() : AnimatedSprite("../art/bear_sheet.png", 256, 128, 4, false) {
